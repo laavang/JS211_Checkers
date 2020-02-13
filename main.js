@@ -8,15 +8,48 @@ const rl = readline.createInterface({
 });
 
 
-function Checker() {
-  // Your code here
+
+class Checker {
+  constructor (symbol) {
+    this.symbol = symbol;
+  }
 }
+
+
 
 class Board {
   constructor() {
-    this.grid = []
+    this.grid = [];
+    this.checkers = [];
   }
+
+  createCheckers() {
+    let whitePositions = [ [0, 1], [0, 3], [0, 5], [0, 7],
+    [1, 0], [1, 2], [1, 4], [1, 6],
+    [2, 1], [2, 3], [2, 5], [2, 7] ];
+
+    let blackPositions = [ [5, 0], [5, 2], [5, 4], [5, 6],
+    [6, 1], [6, 3], [6, 5], [6, 7],
+    [7, 0], [7, 2], [7, 4], [7, 6] ];
+    
+      whitePositions.forEach(function createWhiteCheckers(position) {
+        const checker = new Checker(String.fromCharCode(0x125CB));
+        this.grid[position[0]][position[1]] = this.checker;
+        this.checkers.push(checker);
+      }
+      );
+
+      whitePositions.forEach(function createBlackCheckers(position) {
+        const checker = new Checker(String.fromCharCode(0x125CF));
+        this.grid[position[0]][position[1]] = this.checker;
+        this.checkers.push(checker);
+      }
+      );
+  }
+
+
   // method that creates an 8x8 array, filled with null values
+  
   createGrid() {
     // loop to create the 8 rows
     for (let row = 0; row < 8; row++) {
@@ -27,6 +60,7 @@ class Board {
       }
     }
   }
+
   viewGrid() {
     // add our column numbers
     let string = "  0 1 2 3 4 5 6 7\n";
@@ -52,7 +86,35 @@ class Board {
     console.log(string);
   }
 
-  // Your code here
+  //your code here vvvv
+
+  selectChecker(row, column) {
+    return this.grid[row][column]; 
+  }
+
+  moveChecker(whichPiece, toWhere) {
+
+    let startRow = whichPiece[0];
+    let startColumn = whichPiece[1];
+    let endRow = toWhere[0];
+    let endColumn = toWhere[1];
+
+    this.board[startRow][startColumn] = null;
+    this.board[endRow][endColumn] = this.selectChecker(startRow, startColumn);
+
+    if (Math.abs(startRow - endRow) === 2) {
+      killChecker(endRow, endColumn); 
+    }
+
+  }
+
+  killChecker(endRow, endColumn) {
+    
+    
+    
+
+
+  }
 }
 
 class Game {
@@ -61,6 +123,7 @@ class Game {
   }
   start() {
     this.board.createGrid();
+    this.board.createCheckers()
   }
 }
 
