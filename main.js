@@ -24,6 +24,11 @@ class Board {
   }
 
   createCheckers() {
+
+
+    let grid = this.grid;
+    let checkers = this.checkers;
+
     let whitePositions = [ [0, 1], [0, 3], [0, 5], [0, 7],
     [1, 0], [1, 2], [1, 4], [1, 6],
     [2, 1], [2, 3], [2, 5], [2, 7] ];
@@ -34,15 +39,15 @@ class Board {
     
       whitePositions.forEach(function createWhiteCheckers(position) {
         const checker = new Checker(String.fromCharCode(0x125CB));
-        this.grid[position[0]][position[1]] = this.checker;
-        this.checkers.push(checker);
+        grid[position[0]][position[1]] = checker;
+        checkers.push(checker);
       }
       );
 
-      whitePositions.forEach(function createBlackCheckers(position) {
+      blackPositions.forEach(function createBlackCheckers(position) {
         const checker = new Checker(String.fromCharCode(0x125CF));
-        this.grid[position[0]][position[1]] = this.checker;
-        this.checkers.push(checker);
+        grid[position[0]][position[1]] = checker;
+        checkers.push(checker);
       }
       );
   }
@@ -92,28 +97,7 @@ class Board {
     return this.grid[row][column]; 
   }
 
-  moveChecker(whichPiece, toWhere) {
-
-    let startRow = whichPiece[0];
-    let startColumn = whichPiece[1];
-    let endRow = toWhere[0];
-    let endColumn = toWhere[1];
-
-    this.board[startRow][startColumn] = null;
-    this.board[endRow][endColumn] = this.selectChecker(startRow, startColumn);
-
-    if (Math.abs(startRow - endRow) === 2) {
-      killChecker(endRow, endColumn); 
-    }
-
-  }
-
   killChecker(endRow, endColumn) {
-    
-    
-    
-
-
   }
 }
 
@@ -124,6 +108,22 @@ class Game {
   start() {
     this.board.createGrid();
     this.board.createCheckers()
+  }
+  moveChecker(whichPiece, toWhere) {
+
+    let startRow = whichPiece[0];
+    let startColumn = whichPiece[1];
+    let endRow = toWhere[0];
+    let endColumn = toWhere[1];
+
+    let checker = this.board.selectChecker(startRow, startColumn);
+
+    this.board.grid[endRow][endColumn] = checker;
+    this.board.grid[startRow][startColumn] = null;
+
+    if (Math.abs(startRow - endRow) === 2) {
+      killChecker(endRow, endColumn); 
+    }
   }
 }
 
