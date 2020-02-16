@@ -91,13 +91,26 @@ class Board {
     console.log(string);
   }
 
-  //your code here vvvv
 
   selectChecker(row, column) {
     return this.grid[row][column]; 
   }
 
-  killChecker(endRow, endColumn) {
+  killChecker(startRow, startColumn, endRow, endColumn) {
+    let killRow = ((startRow + endRow) / 2);
+    let killColumn = ((startColumn + endColumn) / 2);
+
+    let checker = this.selectChecker(killRow, killColumn);
+    checker.shouldKill === true;
+
+    const findCheckerToKill = (checker) => {
+      checker.shouldKill === true;
+    }
+
+    let killIndex = this.checkers.findIndex(findCheckerToKill);
+    this.checkers.splice(killIndex, 1);
+    this.grid[killRow][killColumn] = null;
+
   }
 }
 
@@ -111,10 +124,10 @@ class Game {
   }
   moveChecker(whichPiece, toWhere) {
 
-    let startRow = whichPiece[0];
-    let startColumn = whichPiece[1];
-    let endRow = toWhere[0];
-    let endColumn = toWhere[1];
+    let startRow = parseInt(whichPiece[0]);
+    let startColumn = parseInt(whichPiece[1]);
+    let endRow = parseInt(toWhere[0]);
+    let endColumn = parseInt(toWhere[1]);
 
     let checker = this.board.selectChecker(startRow, startColumn);
 
@@ -122,7 +135,7 @@ class Game {
     this.board.grid[startRow][startColumn] = null;
 
     if (Math.abs(startRow - endRow) === 2) {
-      killChecker(endRow, endColumn); 
+      this.board.killChecker(startRow, startColumn, endRow, endColumn); 
     }
   }
 }
